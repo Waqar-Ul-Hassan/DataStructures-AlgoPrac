@@ -1,16 +1,16 @@
 class MyCalendar:
 
     def __init__(self):
-        self.bookings = []
-
+        self.start_events = SortedList()
+        self.end_events = SortedList()
     def book(self, startTime: int, endTime: int) -> bool:
-        for s,e in self.bookings:
-            if not (endTime <= s or startTime >= e):
-                return False
-        
-        self.bookings.append([startTime, endTime])
-        return True
-
+        left = bisect_right(self.end_events, startTime)
+        right = bisect_left(self.start_events, endTime)
+        if left == right:
+            self.start_events.add(startTime)
+            self.end_events.add(endTime)
+            return True
+        else: return False
 
 # Your MyCalendar object will be instantiated and called as such:
 # obj = MyCalendar()
